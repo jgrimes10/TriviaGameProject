@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Terrrrivia Game!</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="styling.css">
+        <script src="brains.js"></script>
+    </head>
+    <body>
+        <div id="container">
+            <div id="question">
+                <p>You will have <span id="secs">##</span> seconds. Click "Start!" to begin the Terrrrivia!</p>
+            </div>
+            
+            <button onclick="DisplayQuestion()" class="button" id="startBtn">Start!</button>
+            
+            <div id="answers">
+                <button class="answer" id="a1" onclick="checkAnswer('1')">Option 1</button>
+                <button class="answer" id="a2" onclick="checkAnswer('2')">Option 1</button>
+                <button class="answer" id="a3" onclick="checkAnswer('3')">Option 1</button>
+                <button class="answer" id="a4" onclick="checkAnswer('4')">Option 1</button>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,34 +1,102 @@
 body {
     font-family: calibri, sans-serif;
+    background-color: #7CDBD5;
+    color: white;
 }
 
 #container {
     height: 600px;
     width: 680px;
     margin: 0 auto;
-    background-color: #ebfdf2
 }
 
-#headerBar {
-    height: 80px;
-    width: 680px;
-    background: linear-gradient(#3ec600, #befeae);
-    -o-background: linear-gradient(#3ec600, #befeae);
-    -moz-background: linear-gradient(#3ec600, #befeae);
-    -webkit-background: linear-gradient(#3ec600, #befeae);
-}
-#questionBox {
-    /* Text Style */
+#title {
+    background-color: #02C8A7;
     text-align: center;
-    color: gray;
-    
-    /* Box Style */
-    height: 100px;
-    width: 600;
-    margin: 5px auto;
-    background-color: #f0ffbc;
-    border-style: solid;
-    border-color: #c8ff05;
-    border-width: thick;
-    border-radius: 3px;
+    border: 3px solid white;
+    border-radius: 8px;
+    margin: 5px 60px;
 }
+
+input {
+    width: 300px;
+    background-color: #F53240;
+    color: white;
+    border: 0;
+}
+
+.dropdown {
+    width: 300px;
+    background-color: #F53240;
+    color: white;
+}
+
+.dropdown:hover {
+    cursor: pointer;
+}
+
+#container {
+    border: 2px solid #02C8A7;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.button {
+    display: block;
+    margin: 40px auto;
+    position: relative;
+    width: 100px;
+    height: 30px;
+    background: #F53240;
+    color: white;
+    border-radius: 4px;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+#question {
+    height: 300px;
+    width: 600px;
+    margin: 0px auto 90px auto;
+    text-align: center;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+    border-radius: 5px;
+    background-color: #02C8A7;
+}
+
+.answer {
+    background-color: #F53240;
+    color: white;
+    font-weight: bold;
+    height: 90px;
+    width: 333px;
+    margin: 0px 10px 10px 0px;
+}
+
+#a2, #a4 {
+    margin-right: 0px;
+}
+
+/*
+Colors:
+#F9BE02 - golden
+#7CDBD5 - sky
+#F53240 - bright coral
+#02C8A7 - aquamarine
+*/
+
+/*
+Credits to add to site for logos:
+
+Mark graphic by <a href="http://www.flaticon.com/authors/linh-pham">linh_pham</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Maker">LogoMaker.com</a> https://logomakr.com/45wxe845wxe8
+
+Interface graphic by <a href="http://www.flaticon.com/authors/egor-rumyantsev">egor_rumyantsev</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Maker">LogoMaker.com</a> https://logomakr.com/2no5hs2no5hs
+
+Play graphic by <a href="http://www.flaticon.com/authors/freepik">freepik</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Maker">LogoMaker.com</a> https://logomakr.com/7SnZ717SnZ71
+*/
