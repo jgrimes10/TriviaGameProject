@@ -5,6 +5,10 @@
 var currentQuestion = 0;
 var secondsPerQuestion = 15;
 var correctAnswer = -1;
+var isPlaying = false;
+var action;
+var score;
+var timeRemaining;
 
 // Onload checks if it is the game html and finds the span for seconds and changes it to the corrent number for the starting text to let the user know how long they will have for the amount of questions they picked
 window.onload = function () {
@@ -17,10 +21,64 @@ window.onload = function () {
     if (page === "game.html") {
         // Find the "secs" span and set it to the saved number
         document.getElementById("secs").innerHTML = localStorage.getItem("secs");
-        // Hide answer boxes until the trivia game starts
-        document.getElementById("answers").style.display = "none";
     }
 };
+
+// Function to quickly hide an element
+function hide(Id) {
+    "use strict";
+    document.getElementById(Id).style.visibility = "hidden";
+}
+
+// Function to quickly show an element
+function show(Id) {
+    "use strict";
+    document.getElementById(Id).style.visibility = "visible";
+}
+
+// Function to stop the counter
+function stopCountdown() {
+    "use strict";
+    
+    clearInterval(action);
+}
+
+// Function to start the countdown
+function startCountdown() {
+    "use strict";
+    
+    // Start the countdown and subtract 1 from timeRemaining every 1000ms (1 sec)
+    action = setInterval(function () {timeRemaining -= 1;
+        document.getElementById("timeRemainingValue").innerHTML = window.timeRemaining;
+        // If there is no more time remaining
+        if (window.timeRemaining === 0 || currentQuestion >= localStorage.getItem("numQues")) {
+            // Stop the countdown
+            stopCountdown();
+            
+            // Make the GameOver screen visible
+            show("gameOver");
+            // Write the gameOver text
+            document.getElementById("gameOver").innerHTML = "<p>Game Over!</p><p>Your score is " + score + ".</p>";
+            
+            // Hide the time remaining tex
+            hide("timeRemaining");
+            
+            // Hide correct & incorrect box & answer boxes
+            hide("a1");
+            hide("a2");
+            hide("a3");
+            hide("a4");
+            
+            // Set to not playing
+            window.isPlaying = false;
+            
+            // Change Reset button to say Start
+            document.getElementById("startReset").innerHTML = "Start Game";
+            
+            window.currentQuestion = 0;
+            
+        } }, 1000); // Change the countdown every 1000ms (1 sec)
+}
 
 // Function to handle the xmlhttp request
 function xmlhttpRequest(apiURL) {
@@ -51,8 +109,8 @@ function displayAnswers(questionObj) {
     // THE QUESTION IS MULTIPLE CHOICE
     if (questionObj.results[window.currentQuestion].type === "multiple") {
         // Make sure all 4 boxes are shown
-        document.getElementById("a3").style.visibility = "visible";
-        document.getElementById("a4").style.visibility = "visible";
+        show("a3");
+        show("a4");
         
         // Generate random number to know which box to put the correct answer in
         correctPosition = Math.floor(Math.random() * 4) + 1;
@@ -78,8 +136,8 @@ function displayAnswers(questionObj) {
         // THE QUESTION IS TRUE/FALSE
         
         // Hide the bottom two answers
-        document.getElementById("a3").style.visibility = "hidden";
-        document.getElementById("a4").style.visibility = "hidden";
+        hide("a3");
+        hide("a4");
         
         // Set the text of the true and false boxes
         document.getElementById("a1").innerHTML = "True";
@@ -94,22 +152,8 @@ function displayAnswers(questionObj) {
     }
 }
 
-// Function to check the answer the user clicked
-function checkAnswer(answer) {
-    "use strict";
-    // Check the given answer against the correct answer
-    if (answer == window.correctAnswer) {
-        alert("RIGHT!");
-        window.currentQuestion += 1;
-        
-        DisplayQuestion();
-    } else {
-        alert("WRONG!");
-    }
-}
-
 // Function to display the questions
-function DisplayQuestion() {
+function displayQuestion() {
     "use strict";
     var questionDiv = document.getElementById("question"),
         questionObj;
@@ -117,14 +161,8 @@ function DisplayQuestion() {
     // If this is the first question
     if (window.currentQuestion === 0) {
         
-        // Show the answers
-        document.getElementById("answers").style.display = "block";
-        
         // Get the JSON object from the API
         xmlhttpRequest(localStorage.getItem("fullURL"));
-        
-        // Get rid of the start button
-        document.getElementById("startBtn").remove();
     }
     
     // Parse the results
@@ -137,6 +175,89 @@ function DisplayQuestion() {
     
     // Display the answers, both right and wrong
     displayAnswers(questionObj);
+}
+
+// If we click the start/reset button
+function startReset() {
+    "use strict";
+    
+    // Show the answer boxes
+    //document.getElementById("answers").style.display = "block";
+    show("a1");
+    show("a2");
+    show("a3");
+    show("a4");
+    
+    // If we are already playing
+    if (isPlaying === true) {
+        // Reload the quiz
+        window.location.href = "index.html";
+    } else { // If we are not playing
+        
+        // Change isPlaying to true
+        window.isPlaying = true;
+        
+        // Set score to 0
+        window.score = 0;
+        
+        // Show countdown
+        show("timeRemaining");
+        // Set the amount of time remaining
+        window.timeRemaining = localStorage.getItem("secs");
+        
+        // Hide the gameover Screen
+        hide("gameOver");
+        
+        // Change button text to Reset
+        document.getElementById("startReset").innerHTML = "Reset Game";
+        
+        // Start the countdown
+        startCountdown();
+        
+        // Display the question
+        displayQuestion();
+    }
+}
+
+// Function to check the answer the user clicked
+function checkAnswer(answer) {
+    "use strict";
+    // Check the given answer against the correct answer
+    if (answer == window.correctAnswer) {
+        // Add to the score
+        score += 2;
+        
+        // Update score on screen
+        document.getElementById("scoreValue").innerHTML = window.score;
+        
+        // Move to the next question
+        window.currentQuestion += 1;
+        
+        // Hide wrong box and show correct box
+        hide("wrong");
+        show("correct");
+        // Hide correct again after 1 sec
+        setTimeout(function() {
+            hide("correct");
+        }, 1000);
+        
+        // Display the next question
+        displayQuestion();
+    } else {
+        // Subtract from score
+        score -= 1;
+        
+        // Update score on screen
+        document.getElementById("scoreValue").innerHTML = window.score;
+        
+        // Hide correct box and show wrong box
+        hide("correct");
+        show("wrong");
+        // Hide wrong box again after 1 sec
+        setTimeout(function () {
+            hide("wrong");
+        }, 1000);
+    }
 }
 
 function createURL() {
@@ -160,6 +281,9 @@ function createURL() {
         type = document.getElementById("typeDropDown").value,
         fullURL = "",
         seconds = 0;
+    
+    // Save the number of questions
+    localStorage.setItem("numQues", document.getElementById("numQuesInput").value);
     
     // Check to see if an option was selected for category, if not, remove the base part
     if (category === "") {
